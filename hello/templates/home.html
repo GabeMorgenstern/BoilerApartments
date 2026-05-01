@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - Boiler Apartments</title>
+
+    <!-- Purdue-style font (Source Sans Pro) -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Source Sans Pro', Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+
+            background-image: url('https://photos.smugmug.com/Places/Purdue/Aerial/i-XsgW3gP/2/K9BVrMcQxjrpwTbGtjGDzNv97TPBkNr2W3BKF2cJ7/XL/DJI_0002-XL.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.55);
+            padding: 40px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 22px;
+            margin: 10px;
+
+            background-color: #CFB991; /* Purdue Gold */
+            color: #000;
+
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #bfa574;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+    <h1>Welcome to Boiler Apartments!</h1>
+
+    <a class="btn" href="{% url 'apartment_list' %}">View Apartments</a>
+    <a class="btn" href="{% url 'apartment_create' %}">Add Apartment</a>
+
+</div>
+
+</body>
+</html>

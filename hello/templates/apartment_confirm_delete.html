@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Apartment</title>
+
+    <!-- Purdue-style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Source Sans Pro', Arial, sans-serif;
+            background: #f4f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 15px;
+            color: #b00020;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            margin: 8px;
+
+            background-color: #CFB991; /* Purdue Gold */
+            color: #000;
+
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+
+            border: none;
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #bfa574;
+            transform: scale(1.03);
+        }
+
+        .btn-danger {
+            background: #b00020;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #8b0019;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="{% url 'apartment_list' %}">⬅ Back to Apartments</a>
+
+    <div class="card">
+
+        <h1>Delete Apartment</h1>
+
+        <p>
+            Are you sure you want to delete<br>
+            <strong>"{{ apartment.complex_name }}"</strong>?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'apartment_list' %}" class="btn">Cancel</a>
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

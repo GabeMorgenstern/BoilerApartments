@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apartments</title>
+
+    <!-- Purdue-style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Source Sans Pro', Arial, sans-serif;
+            background: #f4f4f6;
+            margin: 0;
+            padding: 0;
+            color: #222;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 34px;
+            margin-bottom: 20px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+
+        /* 🔥 NEW: top navigation bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Buttons */
+        a, button {
+            font-family: inherit;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            margin: 5px;
+
+            background-color: #CFB991; /* Purdue Gold */
+            color: #000;
+
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #bfa574;
+            transform: scale(1.03);
+        }
+
+        /* Filter form */
+        form {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        /* Apartment cards */
+        .card {
+            background: white;
+            padding: 18px;
+            margin-bottom: 18px;
+
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+            transition: 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .reserved {
+            font-weight: bold;
+            color: #b00020;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- 🔥 UPDATED HEADER -->
+    <div class="top-bar">
+        <a href="{% url 'home' %}" class="btn">⬅ Back to Home</a>
+        <a href="{% url 'apartment_create' %}" class="btn">Add Apartment</a>
+    </div>
+
+    <hr>
+
+    <h1>Available Apartments</h1>
+
+    <!-- Filter form -->
+    <form method="get">
+
+        <input type="text" name="company_name" placeholder="Company Name"
+               value="{{ request.GET.company_name }}">
+
+        <input type="text" name="complex_name" placeholder="Complex Name"
+               value="{{ request.GET.complex_name }}">
+
+        <input type="text" name="location" placeholder="Location"
+               value="{{ request.GET.location }}">
+
+        <input type="number" step="0.01" name="min_price" placeholder="Min Price"
+               value="{{ request.GET.min_price }}">
+
+        <input type="number" step="0.01" name="max_price" placeholder="Max Price"
+               value="{{ request.GET.max_price }}">
+
+        <input type="number" name="min_lease_length" placeholder="Min Lease Length"
+               value="{{ request.GET.min_lease_length }}">
+
+        <input type="number" name="max_lease_length" placeholder="Max Lease Length"
+               value="{{ request.GET.max_lease_length }}">
+
+        <div style="margin-top:10px;">
+
+            <label for="order">Sort By:</label>
+            <select name="order" id="order">
+                <option value="">Default</option>
+
+                <option value="price_asc" {% if request.GET.order == "price_asc" %}selected{% endif %}>
+                    Price: Low to High
+                </option>
+
+                <option value="price_desc" {% if request.GET.order == "price_desc" %}selected{% endif %}>
+                    Price: High to Low
+                </option>
+
+                <option value="newest" {% if request.GET.order == "newest" %}selected{% endif %}>
+                    Newest First
+                </option>
+
+                <option value="lease_asc" {% if request.GET.order == "lease_asc" %}selected{% endif %}>
+                    Lease Length: Short to Long
+                </option>
+
+                <option value="lease_desc" {% if request.GET.order == "lease_desc" %}selected{% endif %}>
+                    Lease Length: Long to Short
+                </option>
+            </select>
+
+            <button class="btn" type="submit">Filter</button>
+            <a class="btn" href="{% url 'apartment_list' %}">Reset</a>
+        </div>
+
+    </form>
+
+    <hr>
+
+    <!-- Apartment list -->
+    {% for apartment in apartments %}
+        <div class="card">
+
+            <h2>{{ apartment.complex_name }}</h2>
+
+            <p><strong>ID:</strong> {{ apartment.id }}</p>
+            <p><strong>Company:</strong> {{ apartment.company_name }}</p>
+            <p><strong>Location:</strong> {{ apartment.location }}</p>
+
+            <p><strong>Lease Start:</strong> {{ apartment.lease_start_date|date:"F j, Y" }}</p>
+            <p><strong>Lease Length:</strong> {{ apartment.lease_length }}</p>
+            <p><strong>Price:</strong> ${{ apartment.price }}</p>
+
+            <div class="actions">
+                <a class="btn" href="{% url 'apartment_update' apartment.id %}">Edit</a>
+                <a class="btn" href="{% url 'apartment_delete' apartment.id %}">Delete</a>
+
+                {% if not apartment.is_reserved %}
+                    <a class="btn" href="{% url 'reserve_apartment' apartment.id %}">Reserve</a>
+                {% else %}
+                    <span class="reserved">Reserved</span>
+                {% endif %}
+            </div>
+
+        </div>
+    {% empty %}
+        <p>No apartments available.</p>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

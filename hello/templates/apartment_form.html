@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Apartment</title>
+
+    <!-- Purdue-style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Source Sans Pro', Arial, sans-serif;
+            background: #f4f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 14px;
+            margin-top: 10px;
+
+            background-color: #CFB991;
+            color: #000;
+
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #bfa574;
+            transform: scale(1.03);
+        }
+
+        /* Form styling */
+        form p {
+            margin-bottom: 12px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        a.back {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="{% url 'apartment_list' %}">⬅ Back to Apartments</a>
+
+    <h1>Create Apartment</h1>
+
+    <div class="card">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Django form rendering -->
+            {{ form.as_p }}
+
+            <div class="actions">
+                <button type="submit" class="btn">Save Apartment</button>
+                <a class="btn" href="{% url 'apartment_list' %}">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
